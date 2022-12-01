@@ -4,45 +4,24 @@
   </div>
   <div class="page row">
     <div class="mt-5 col-md-12">
-      <h2>
-        Danh sách điểm du lịch
-      </h2>
-      <br>
+      <h2>Danh sách điểm du lịch</h2>
+      <br />
       <TouristAttractionList
         v-if="filteredTouristAttractionsCount > 0"
         :touristAttractions="filteredTouristAttractions"
         v-model:activeIndex="activeIndex"
       />
       <p v-else>Không có điểm du lịch nào.</p>
-      <div class="mt-3 row justify-content-around align-items-center">
-        <button class="btn btn-sm btn-primary" @click="refreshList()">
-          <i class="fas fa-redo" /> Làm mới
-        </button>
-        <button class="btn btn-sm btn-success" @click="goToAddTouristAttraction">
-          <i class="fas fa-plus" /> Thêm mới
-        </button>
-        <button class="btn btn-sm btn-danger" @click="onDeleteTouristAttractions">
-          <i class="fas fa-trash" /> Xóa tất cả
-        </button>
-      </div>
     </div>
     <div class="mt-5 col-md-12">
       <div v-if="activeTouristAttraction">
-        <h2>
-          Chi tiết Điểm du lịch
-        </h2>
-        <br>
+        <h2>Chi tiết Điểm du lịch</h2>
+        <br />
         <TouristAttractionCard :touristAttraction="activeTouristAttraction" />
-        <router-link
-          :to="{
-            name: 'touristAttraction.edit',
-            params: { id: activeTouristAttraction.id },
-          }"
-        >
-          <span class="mt-2 badge badge-warning mb-5">
-            <i class="fas fa-edit" /> Hiệu chỉnh</span
-          >
-        </router-link>
+        <button type="submit" class="mt-5 mb-5 btn btn-primary" @click="goToAddPlan">
+          Add to plan
+          <i class="fas fa-edit" />
+        </button>
       </div>
     </div>
   </div>
@@ -52,13 +31,29 @@ import TouristAttractionCard from "@/components/TouristAttractionCard.vue";
 import InputSearch from "@/components/InputSearch.vue";
 import TouristAttractionList from "@/components/TouristAttractionList.vue";
 import { touristAttractionService } from "@/services/touristAttraction.service";
+import { useRoute, useRouter } from "vue-router";
+import firebase from "firebase/compat";
+import { onBeforeMount } from "vue";
 export default {
   components: {
     TouristAttractionCard,
     InputSearch,
     TouristAttractionList,
   },
-  // The full code will be presented below
+
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    onBeforeMount(() => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          router.replace("/login");
+        } else if (route.path == "/login" || route.path == "/register") {
+          router.replace("/");
+        }
+      });
+    });
+  },
   data() {
     return {
       touristAttractions: [],
@@ -67,21 +62,17 @@ export default {
     };
   },
   watch: {
-    // Monitor changes on searchText.
-    // Release the currently selected contact.
     searchText() {
       this.activeIndex = -1;
     },
   },
   computed: {
-    // Map contacts to strings for searching.
     touristAttractionsAsStrings() {
       return this.touristAttractions.map((touristAttraction) => {
-        const { name, address, area, fare } = touristAttraction;
-        return [name, address, area, fare].join("");
+        const { name, address, describe, fare } = touristAttraction;
+        return [name, address, describe, fare].join("");
       });
     },
-    // Return contacts filtered by the search box.
     filteredTouristAttractions() {
       if (!this.searchText) return this.touristAttractions;
       return this.touristAttractions.filter((touristAttraction, index) =>
@@ -111,18 +102,8 @@ export default {
       this.retrieveTouristAttractions();
       this.activeIndex = -1;
     },
-    async onDeleteTouristAttractions() {
-      if (confirm("Bạn muốn xóa tất cả Liên hệ?")) {
-        try {
-          await touristAttractionService.deleteMany();
-          this.refreshList();
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    },
-    goToAddTouristAttraction() {
-      this.$router.push({ name: "touristAttraction.add" });
+    goToAddPlan() {
+      this.$router.push({ name: "touristAttractionPlan.add" });
     },
   },
   mounted() {

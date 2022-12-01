@@ -1,5 +1,8 @@
 <template>
-  <Form @submit="submitTouristAttraction" :validation-schema="touristAttractionFormSchema">
+  <Form
+    @submit="submitTouristAttraction"
+    :validation-schema="touristAttractionFormSchema"
+  >
     <div class="form-group">
       <label for="name">Tên điểm du lịch</label>
       <Field
@@ -21,7 +24,7 @@
       <ErrorMessage name="address" class="error-feedback" />
     </div>
     <div class="form-group">
-      <label for="describe">Mô tả</label>
+      <label for="describe">Giới thiệu</label>
       <Field
         name="describe"
         type="text"
@@ -40,16 +43,6 @@
       />
       <ErrorMessage name="fare" class="error-feedback" />
     </div>
-    <!-- <div>
-      <label for="image">Image</label>
-      <Field
-        name="image"
-        type="file"
-        accept="image/gif, image/png, image/jpg"
-        v-model="touristAttractionLocal.image"
-      />
-      <ErrorMessage name="image" class="error-feedback" />
-    </div> -->
     <div class="form-group form-check">
       <input
         name="favorite"
@@ -66,7 +59,7 @@
       <button
         v-if="touristAttractionLocal.id"
         type="button"
-        class="ml-2 btn btn-danger"
+        class="ml-5 btn btn-danger"
         @click="deleteTouristAttraction"
       >
         Xóa
@@ -77,7 +70,7 @@
 <script>
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
-export default {
+export default { 
   components: {
     Form,
     Field,
@@ -94,40 +87,24 @@ export default {
         .required("Tên phải có giá trị.")
         .min(2, "Tên phải ít nhất 2 ký tự.")
         .max(50, "Tên có nhiều nhất 50 ký tự."),
-      image: yup.string().max(255, "File ảnh tối đa 255 ký tự"),
-      address: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
+      address: yup.string().max(1000, "Địa chỉ tối đa 1000 ký tự."),
       describe: yup
-        .string()
-        .max(755, "Mô tả tối đa 755 ký tự."),
+        .string(),
       fare: yup
         .number()
     });
     return {
-      // Props are supposed to be immutable, therefore create
-      // a local variable touristAttractionLocal and bind it to the form
       touristAttractionLocal: { ...this.touristAttraction, favorite: !!this.touristAttraction.favorite },
       touristAttractionFormSchema,
     };
   },
   methods: {
     submitTouristAttraction() {
-      console.log(this.touristAttractionLocal.image);
-      this.touristAttractionLocal.image = this.touristAttractionLocal.image.name;
       this.$emit("submit:touristAttraction", this.touristAttractionLocal);
     },
     deleteTouristAttraction() {
       this.$emit("delete:touristAttraction", this.touristAttractionLocal.id);
     },
-    // uploadImage(e){
-    //   const image = e.target.files[0];
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(image);
-    //   reader.onload = e =>{
-    //     this.previewImage = e.target.result;
-    //     //
-    //     console.log(this.previewImage)
-    //   };
-    // }
   },
 };
 </script>

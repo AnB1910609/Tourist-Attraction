@@ -2,7 +2,10 @@
   <nav class="navbar navbar-expand bg-dark">
     <div class="mr-auto navbar-nav col-3 justify-content-end ml-5">
       <li class="nav-item">
-        <router-link :to="{ name: 'touristAttraction' }" class="nav-link h4 text-white">
+        <router-link
+          :to="{ name: 'touristAttraction' }"
+          class="nav-link h4 text-white"
+        >
           Home
           <i class="fa-solid fa-house-user"></i>
         </router-link>
@@ -10,7 +13,10 @@
     </div>
     <div class="mr-auto navbar-nav col">
       <li class="nav-item">
-        <router-link :to="{ name: 'touristAttraction' }" class="nav-link h4 text-white">
+        <router-link
+          :to="{ name: 'plan' }"
+          class="nav-link h4 text-white"
+        >
           Plan
           <i class="fa fa-book" aria-hidden="true"></i>
         </router-link>
@@ -18,9 +24,9 @@
     </div>
     <div class="mr-auto navbar-nav col-3 justify-content-start">
       <li class="nav-item">
-        <router-link :to="{ name: 'touristAttraction' }" class="nav-link h4 text-white">
-          User
+        <router-link :to="{ name: 'About' }" class="nav-link h4 text-white">
           <i class="fa-solid fa-user"></i>
+          User
         </router-link>
       </li>
     </div>

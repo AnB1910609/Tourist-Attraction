@@ -34,7 +34,6 @@ export default {
   created() {
     this.touristAttraction = {
       name: "",
-      image: "",
       address: "",
       describe: "",
       fare: "",

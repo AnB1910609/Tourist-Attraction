@@ -1,6 +1,6 @@
 <template>
-  <div v-if="touristAttraction" class="page">
-    <h2>Hiệu chỉnh Điểm du lịch</h2>
+  <div v-if="touristAttraction" class="page mt-5">
+    <h2>Chỉnh sửa điểm du lịch</h2>
     <TouristAttractionForm
       :touristAttraction="touristAttraction"
       @submit:touristAttraction="onUpdateTouristAttraction"
@@ -31,7 +31,6 @@ export default {
         this.touristAttraction = await touristAttractionService.get(id);
       } catch (error) {
         console.log(error);
-        // Redirect to NotFound page and keep URL intact
         this.$router.push({
           name: "notfound",
           params: {
@@ -54,7 +53,7 @@ export default {
       if (confirm("Bạn muốn xóa Điểm du lịch này?")) {
         try {
           await touristAttractionService.delete(id);
-          this.$router.push({ name: "touristAttractionbook" });
+          this.$router.push({ name: "touristAttraction" });
         } catch (error) {
           console.log(error);
         }

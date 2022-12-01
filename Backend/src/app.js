@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const touristAttractionController = require('./controllers/touristAttraction.controller');
+const planController = require('./controllers/plan.controller');
 const ApiError = require('./api-error');
 
 const app = express();
@@ -24,19 +25,22 @@ app.route('/api/touristAttraction/:id')
     .put(touristAttractionController.update)
     .delete(touristAttractionController.delete);
 
-// Handle 404 response.
+// Plan
+app.route('/api/plan')
+    .get(planController.findAll)
+    .post(planController.create)
+    .delete(planController.deleteAll);
+
+app.route('/api/plan/:id')
+    .get(planController.findOne)
+    .put(planController.update)
+    .delete(planController.delete);
 app.use((req, res, next) => {
-    // Handler for unknown route.
-    // Call next() to pass to the error handling middleware.
     return next(new ApiError(404, 'Resource not found'));
 });
 
-// Define error-handling middleware last, after other app.use() and routes calls.
 
 app.use((error, req, res, next) => {
-    // The centralized error handling middleware.
-    // In any route handler, calling next(error)
-    // will pass to this error handling middleware.
     return res.status(error.statusCode || 500).json({
         message: error.message || 'Internal Server Error',
     });

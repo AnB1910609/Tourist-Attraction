@@ -11,12 +11,15 @@ export default {
       <strong>Tên điểm du lịch:</strong>
       {{ touristAttraction.name }}
     </div>
+    <br>
     <div class="p-1">
-      <strong>Địa chỉ:</strong>
+      <strong>Địa chỉ: </strong>
       {{ touristAttraction.address }}
     </div>
+    <br>
     <div class="p-1">
-      <strong>Mô tả:</strong>
+      <strong>Giới thiệu</strong>
+      <br>
       {{ touristAttraction.describe }}
     </div>
     <div class="p-1">

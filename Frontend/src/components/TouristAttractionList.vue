@@ -25,6 +25,7 @@ export default {
         {{ touristAttraction.name }}
       </div>
     </div>
+    
   </ul>
   <br>
 </template>

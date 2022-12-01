@@ -19,7 +19,7 @@ export default {
     <input
       type="text"
       class="form-control"
-      placeholder="Nhập điểm du lịch cần tìm"
+      placeholder="Nhập điểm du lịch cần tìm..."
       :value="modelValue"
       @input="updateModelValue"
       @keyup.enter="submit"
